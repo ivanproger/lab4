@@ -1,6 +1,5 @@
 #include "Interface.h"
 
-
 void interface()
 {
     std::srand(static_cast<unsigned int>(std::time(nullptr)));
@@ -13,14 +12,16 @@ void interface()
     std::cin >> vertexTypeChoice;
 
     if (vertexTypeChoice == 1) {
-        MyGraph<int, double> graph;
+        Graph<int, double> graph;
         GraphMenu(graph);
     }
     else if (vertexTypeChoice == 2) {
-        MyGraph<std::string, double> graph;
+        Graph<std::string, double> graph;
         GraphMenu(graph);
     }
     else {
         std::cout << "Invalid choice. Exiting.\n";
+        interface();
     }
 }
+

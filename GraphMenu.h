@@ -1,13 +1,13 @@
 #pragma once
-
+#include "Graph.h"
+#include "GraphUtils.h"
+#include "TestSuite.h"
 #include <iostream>
 #include <string>
 #include <limits>
-#include "MyGraph.h"
-#include "TestSuite.h"
 
 template <typename TKey, typename WeightType>
-void GraphMenu(MyGraph<TKey, WeightType>& graph) {
+void GraphMenu(Graph<TKey, WeightType>& graph) {
     bool exitFlag = false;
     while (!exitFlag)
     {
@@ -18,8 +18,8 @@ void GraphMenu(MyGraph<TKey, WeightType>& graph) {
             << "3. Generate graph\n"
             << "4. Save graph to the file\n"
             << "5. Load graph from the file\n"
-            << "6. Color graph\n"
-            << "7. Calculate minimum distances\n"
+            << "6. Color graph (external function)\n"
+            << "7. Calculate minimum distances (external function)\n"
             << "8. Print graph\n"
             << "9. Run tests\n"
             << "0. Exit\n"
@@ -108,26 +108,27 @@ void GraphMenu(MyGraph<TKey, WeightType>& graph) {
         }
         case 6:
         {
-            // Раскраска
-            DynamicArray<int> colorResult = graph.GraphColoring();
+            // Раскраска (внешняя функция)
+            auto colors = GraphColoring(graph);
             std::cout << "Coloring result:\n";
-            for (int i = 0; i < colorResult.GetLength(); i++)
+            for (int i = 0; i < colors.GetLength(); i++)
             {
                 std::cout << "Node " << graph.GetVertex(i)
-                    << " -> color " << colorResult.GetElem(i) << "\n";
+                    << " -> color " << colors[i] << "\n";
             }
             break;
         }
         case 7:
         {
+            // Внешняя функция поиска минимальных расстояний
             std::cout << "Enter the start vertex for minimal distances: ";
             TKey startV;
             std::cin >> startV;
-            DynamicArray<PathInfo<TKey>> paths = graph.MinimalDistances(startV);
+            auto paths = MinDistances(graph, startV);
             std::cout << "Distances and paths from " << startV << ":\n";
             for (int i = 0; i < paths.GetLength(); i++)
             {
-                auto& pi = paths.GetElem(i);
+                auto& pi = paths[i];
                 TKey node = graph.GetVertex(i);
                 if (pi.distance == -1)
                     std::cout << "Node " << node << " -> unreachable\n";
@@ -135,7 +136,7 @@ void GraphMenu(MyGraph<TKey, WeightType>& graph) {
                 {
                     std::cout << "Node " << node << " -> distance " << pi.distance << ", path: ";
                     for (int j = 0; j < pi.path.GetLength(); j++) {
-                        std::cout << pi.path.GetElem(j);
+                        std::cout << pi.path[j];
                         if (j < pi.path.GetLength() - 1)
                             std::cout << " -> ";
                     }
@@ -152,7 +153,7 @@ void GraphMenu(MyGraph<TKey, WeightType>& graph) {
         }
         case 9:
         {
-            RunAllTests();
+            RunAllTests(); 
             break;
         }
         case 0:

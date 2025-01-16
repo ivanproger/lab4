@@ -3,7 +3,7 @@
 #include <cstdlib> 
 #include <ctime>     
 #include <string>
-#include "MyGraph.h"
+#include "Graph.h"
 #include "GraphMenu.h"
 
 void interface();

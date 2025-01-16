@@ -83,7 +83,6 @@ public:
         return *this;
     }
 
-    // Constructor from array
     DynamicArray(T* items, int itemsSize) {
         size = itemsSize;
         capacity = itemsSize * 2;
@@ -96,6 +95,14 @@ public:
 
     ~DynamicArray() {
         delete[] data;
+    }
+
+    // Константный вариант
+    const T& operator[](int index) const {
+        if (index < 0 || index >= size) {
+            throw std::out_of_range("Index out of range");
+        }
+        return data[index];
     }
 
     T& operator[](int index) {
